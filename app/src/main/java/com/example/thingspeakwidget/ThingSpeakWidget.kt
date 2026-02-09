@@ -247,6 +247,26 @@ class ThingSpeakWidget : AppWidgetProvider() {
 
             checkAlarms(context, config, val1, views)
 
+            // Limit Indicators
+            var showIndicators = false
+            if (config.upperLimit != null) {
+                views.setTextViewText(R.id.tv_limit_up, "↑ ${config.upperLimit}")
+                views.setViewVisibility(R.id.tv_limit_up, View.VISIBLE)
+                showIndicators = true
+            } else {
+                views.setViewVisibility(R.id.tv_limit_up, View.GONE)
+            }
+
+            if (config.lowerLimit != null) {
+                views.setTextViewText(R.id.tv_limit_down, "↓ ${config.lowerLimit}")
+                views.setViewVisibility(R.id.tv_limit_down, View.VISIBLE)
+                showIndicators = true
+            } else {
+                views.setViewVisibility(R.id.tv_limit_down, View.GONE)
+            }
+
+            views.setViewVisibility(R.id.layout_limit_indicators, if (showIndicators) View.VISIBLE else View.GONE)
+
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
 
