@@ -29,6 +29,7 @@ class WidgetConfigActivity : AppCompatActivity() {
     private lateinit var cbShowSchedules: CheckBox
     private lateinit var etUpperLimit: TextInputEditText
     private lateinit var etLowerLimit: TextInputEditText
+    private lateinit var etUpdateInterval: TextInputEditText
     
     private val dayCheckboxes = mutableMapOf<Int, CheckBox>()
 
@@ -156,6 +157,7 @@ class WidgetConfigActivity : AppCompatActivity() {
         val apiKey = etApiKey.text.toString().takeIf { it.isNotEmpty() }
         val upperLimit = etUpperLimit.text.toString().toFloatOrNull()
         val lowerLimit = etLowerLimit.text.toString().toFloatOrNull()
+        // Use etUpdateInterval that is declared above
         val updateInterval = etUpdateInterval.text.toString().toIntOrNull() ?: 900
         
         val activeDays = mutableSetOf<Int>()

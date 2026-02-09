@@ -30,9 +30,7 @@ import java.util.Locale
 
 class ThingSpeakWidget : AppWidgetProvider() {
 
-    companion object {
-        const val ACTION_AUTO_UPDATE = "com.example.thingspeakwidget.ACTION_AUTO_UPDATE"
-    }
+
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Main + job)
@@ -93,6 +91,7 @@ class ThingSpeakWidget : AppWidgetProvider() {
     }
 
     companion object {
+        const val ACTION_AUTO_UPDATE = "com.example.thingspeakwidget.ACTION_AUTO_UPDATE"
         // Made suspendable to easier call from onUpdate's coroutine
         suspend fun updateAppWidget(
             context: Context,
