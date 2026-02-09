@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">ThingSpeak Widget</string>
+    <string name="widget_name">ThingSpeak Display</string>
+    <string name="configuration">Configuration</string>
+    <string name="save">Save Widget</string>
+    <string name="channel_id">Channel ID</string>
+    <string name="api_key">Read API Key (Optional)</string>
+    <string name="setup_required">Setup Required</string>
+    <string name="loading">Loading...</string>
+    <string name="updated">Updated: </string>
+    <string name="show_alarms">Show Alarms</string>
+    <string name="show_schedules">Show Schedules</string>
+    <string name="upper_limit">Upper Limit</string>
+    <string name="lower_limit">Lower Limit</string>
+    <string name="alarms">ALARMS</string>
+    <string name="schedules">HORARIOS</string>
+    <!-- Days -->
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="sunday">Sun</string>
+    <string name="refresh">Refresh</string>
+</resources>

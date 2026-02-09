@@ -1,0 +1,29 @@
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (sdk.dir, ndk.dir, etc.)
+local.properties
+
+# Proguard events logs
+proguard-logs/
+
+# Log files
+*.log
+
+# Android Studio generated files
+.idea/
+*.iml
+*.ids
+.navigation/
+captures/
+*.hprof
+
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# OS specific files
+.DS_Store
+Thumbs.db
