@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.thingspeakwidget.util.DaySchedule
 import com.example.thingspeakwidget.util.PrefsManager
 import com.example.thingspeakwidget.util.WidgetConfig
 import com.google.android.material.textfield.TextInputEditText
@@ -33,6 +34,9 @@ class WidgetConfigActivity : AppCompatActivity() {
     private lateinit var etGraphPoints: TextInputEditText
     
     private val dayCheckboxes = mutableMapOf<Int, CheckBox>()
+    private val daySchedules = mutableMapOf<Int, DaySchedule>()
+    // Helper to store button references for updating text
+    private val dayButtons = mutableMapOf<Int, Pair<Button, Button>>()
 
     private lateinit var spinnerField: android.widget.Spinner
 
@@ -77,8 +81,10 @@ class WidgetConfigActivity : AppCompatActivity() {
             etUpdateInterval.setText(existingConfig.updateIntervalSeconds.toString())
             etGraphPoints.setText(existingConfig.graphPointsCount.toString())
             
-            existingConfig.activeDays.forEach { day ->
+            existingConfig.schedules.forEach { (day, schedule) ->
                 dayCheckboxes[day]?.isChecked = true
+                daySchedules[day] = schedule
+                updateTimeButtons(day)
             }
             
             // Set spinner selection (index is 0-based, field is 1-based)
@@ -133,13 +139,55 @@ class WidgetConfigActivity : AppCompatActivity() {
         etUpdateInterval = findViewById(R.id.et_update_interval)
         etGraphPoints = findViewById(R.id.et_graph_points)
         
-        dayCheckboxes[Calendar.MONDAY] = findViewById(R.id.cb_mon)
-        dayCheckboxes[Calendar.TUESDAY] = findViewById(R.id.cb_tue)
-        dayCheckboxes[Calendar.WEDNESDAY] = findViewById(R.id.cb_wed)
-        dayCheckboxes[Calendar.THURSDAY] = findViewById(R.id.cb_thu)
-        dayCheckboxes[Calendar.FRIDAY] = findViewById(R.id.cb_fri)
-        dayCheckboxes[Calendar.SATURDAY] = findViewById(R.id.cb_sat)
-        dayCheckboxes[Calendar.SUNDAY] = findViewById(R.id.cb_sun)
+        setupDayRow(Calendar.MONDAY, R.id.cb_mon, R.id.btn_time_mon_start, R.id.btn_time_mon_end)
+        setupDayRow(Calendar.TUESDAY, R.id.cb_tue, R.id.btn_time_tue_start, R.id.btn_time_tue_end)
+        setupDayRow(Calendar.WEDNESDAY, R.id.cb_wed, R.id.btn_time_wed_start, R.id.btn_time_wed_end)
+        setupDayRow(Calendar.THURSDAY, R.id.cb_thu, R.id.btn_time_thu_start, R.id.btn_time_thu_end)
+        setupDayRow(Calendar.FRIDAY, R.id.cb_fri, R.id.btn_time_fri_start, R.id.btn_time_fri_end)
+        setupDayRow(Calendar.SATURDAY, R.id.cb_sat, R.id.btn_time_sat_start, R.id.btn_time_sat_end)
+        setupDayRow(Calendar.SUNDAY, R.id.cb_sun, R.id.btn_time_sun_start, R.id.btn_time_sun_end)
+    }
+
+    private fun setupDayRow(day: Int, cbId: Int, startBtnId: Int, endBtnId: Int) {
+        val cb = findViewById<CheckBox>(cbId)
+        val startBtn = findViewById<Button>(startBtnId)
+        val endBtn = findViewById<Button>(endBtnId)
+        
+        dayCheckboxes[day] = cb
+        dayButtons[day] = Pair(startBtn, endBtn)
+        
+        // Default schedule if not loaded
+        if (!daySchedules.containsKey(day)) {
+            daySchedules[day] = DaySchedule()
+        }
+
+        // Initial update to show default/loaded values
+        updateTimeButtons(day)
+        
+        startBtn.setOnClickListener {
+            val current = daySchedules[day]!!
+            android.app.TimePickerDialog(this, { _, hour, min ->
+                val latest = daySchedules[day]!!
+                daySchedules[day] = latest.copy(startHour = hour, startMin = min)
+                updateTimeButtons(day)
+            }, current.startHour, current.startMin, true).show()
+        }
+        
+        endBtn.setOnClickListener {
+            val current = daySchedules[day]!!
+            android.app.TimePickerDialog(this, { _, hour, min ->
+                val latest = daySchedules[day]!!
+                daySchedules[day] = latest.copy(endHour = hour, endMin = min)
+                updateTimeButtons(day)
+            }, current.endHour, current.endMin, true).show()
+        }
+    }
+
+    private fun updateTimeButtons(day: Int) {
+        val sched = daySchedules[day] ?: return
+        val buttons = dayButtons[day] ?: return
+        buttons.first.text = String.format("%02d:%02d", sched.startHour, sched.startMin)
+        buttons.second.text = String.format("%02d:%02d", sched.endHour, sched.endMin)
     }
 
     private fun setupSpinner() {
@@ -164,9 +212,11 @@ class WidgetConfigActivity : AppCompatActivity() {
         val updateInterval = etUpdateInterval.text.toString().toIntOrNull() ?: 900
         val graphPoints = etGraphPoints.text.toString().toIntOrNull() ?: 20
         
-        val activeDays = mutableSetOf<Int>()
+        val schedules = mutableMapOf<Int, DaySchedule>()
         dayCheckboxes.forEach { (day, cb) ->
-            if (cb.isChecked) activeDays.add(day)
+            if (cb.isChecked) {
+                schedules[day] = daySchedules[day] ?: DaySchedule()
+            }
         }
         
         // Selected field index + 1
@@ -179,7 +229,7 @@ class WidgetConfigActivity : AppCompatActivity() {
             showSchedules = cbShowSchedules.isChecked,
             upperLimit = upperLimit,
             lowerLimit = lowerLimit,
-            activeDays = activeDays,
+            schedules = schedules,
             selectedField = selectedField,
             updateIntervalSeconds = updateInterval,
             graphPointsCount = graphPoints

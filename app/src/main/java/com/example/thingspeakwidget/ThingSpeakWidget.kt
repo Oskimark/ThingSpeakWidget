@@ -283,6 +283,21 @@ class ThingSpeakWidget : AppWidgetProvider() {
             views.setViewVisibility(R.id.layout_alarms, if (config.showAlarms) View.VISIBLE else View.GONE)
             views.setViewVisibility(R.id.layout_schedules, if (config.showSchedules) View.VISIBLE else View.GONE)
 
+            val calendar = Calendar.getInstance()
+            if (config.showSchedules) {
+                val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+                val sched = config.schedules[dayOfWeek]
+                if (sched != null) {
+                    val days = arrayOf("", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+                    val dayName = days[dayOfWeek]
+                    views.setTextViewText(R.id.tv_schedule_range, 
+                        String.format("%s: %02d:%02d - %02d:%02d", 
+                            dayName, sched.startHour, sched.startMin, sched.endHour, sched.endMin))
+                } else {
+                    views.setTextViewText(R.id.tv_schedule_range, "Inactive Today")
+                }
+            }
+
             checkAlarms(context, config, val1, views)
 
             // Limit Indicators
@@ -329,9 +344,28 @@ class ThingSpeakWidget : AppWidgetProvider() {
             val calendar = Calendar.getInstance()
             val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
-            val isDayActive = config.activeDays.contains(dayOfWeek)
-            if (!isDayActive) {
+            val schedule = config.schedules[dayOfWeek]
+            if (schedule == null) {
                  views.setTextViewText(R.id.tv_alarm_status, "Alarm inactive today")
+                 return
+            }
+
+            val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+            val currentMin = calendar.get(Calendar.MINUTE)
+            val currentTimeInMins = currentHour * 60 + currentMin
+            val startTimeInMins = schedule.startHour * 60 + schedule.startMin
+            val endTimeInMins = schedule.endHour * 60 + schedule.endMin
+            
+            val isOutOfHours = if (startTimeInMins <= endTimeInMins) {
+                currentTimeInMins < startTimeInMins || currentTimeInMins > endTimeInMins
+            } else {
+                // Wrap around midnight (e.g. 21:00 to 00:55)
+                // It is out of hours only if it's AFTER end AND BEFORE start
+                currentTimeInMins > endTimeInMins && currentTimeInMins < startTimeInMins
+            }
+            
+            if (isOutOfHours) {
+                 views.setTextViewText(R.id.tv_alarm_status, "Inactive (Out of Hours)")
                  return
             }
 

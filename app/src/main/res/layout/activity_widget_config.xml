@@ -117,27 +117,103 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Active Days"
-            android:layout_marginTop="8dp"/>
+            android:text="Active Days &amp; Times"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"/>
 
         <LinearLayout
+            android:id="@+id/layout_days_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <CheckBox android:id="@+id/cb_mon" android:text="@string/monday" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            <CheckBox android:id="@+id/cb_tue" android:text="@string/tuesday" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            <CheckBox android:id="@+id/cb_wed" android:text="@string/wednesday" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            <CheckBox android:id="@+id/cb_thu" android:text="@string/thursday" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <CheckBox android:id="@+id/cb_fri" android:text="@string/friday" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            <CheckBox android:id="@+id/cb_sat" android:text="@string/saturday" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-            <CheckBox android:id="@+id/cb_sun" android:text="@string/sunday" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
 
+            <!-- Each day row will follow this pattern -->
+            <!-- We will generate these in code or define them here for simplicity and styling -->
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp">
+                <CheckBox android:id="@+id/cb_mon" android:text="Mon" android:layout_width="70dp" android:layout_height="wrap_content"/>
+                <Button android:id="@+id/btn_time_mon_start" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="08:00" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-"/>
+                <Button android:id="@+id/btn_time_mon_end" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="18:00" android:textSize="12sp"/>
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp">
+                <CheckBox android:id="@+id/cb_tue" android:text="Tue" android:layout_width="70dp" android:layout_height="wrap_content"/>
+                <Button android:id="@+id/btn_time_tue_start" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="08:00" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-"/>
+                <Button android:id="@+id/btn_time_tue_end" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="18:00" android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp">
+                <CheckBox android:id="@+id/cb_wed" android:text="Wed" android:layout_width="70dp" android:layout_height="wrap_content"/>
+                <Button android:id="@+id/btn_time_wed_start" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="08:00" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-"/>
+                <Button android:id="@+id/btn_time_wed_end" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="18:00" android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp">
+                <CheckBox android:id="@+id/cb_thu" android:text="Thu" android:layout_width="70dp" android:layout_height="wrap_content"/>
+                <Button android:id="@+id/btn_time_thu_start" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="08:00" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-"/>
+                <Button android:id="@+id/btn_time_thu_end" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="18:00" android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp">
+                <CheckBox android:id="@+id/cb_fri" android:text="Fri" android:layout_width="70dp" android:layout_height="wrap_content"/>
+                <Button android:id="@+id/btn_time_fri_start" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="08:00" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-"/>
+                <Button android:id="@+id/btn_time_fri_end" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="18:00" android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp">
+                <CheckBox android:id="@+id/cb_sat" android:text="Sat" android:layout_width="70dp" android:layout_height="wrap_content"/>
+                <Button android:id="@+id/btn_time_sat_start" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="08:00" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-"/>
+                <Button android:id="@+id/btn_time_sat_end" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="18:00" android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingVertical="4dp">
+                <CheckBox android:id="@+id/cb_sun" android:text="Sun" android:layout_width="70dp" android:layout_height="wrap_content"/>
+                <Button android:id="@+id/btn_time_sun_start" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="08:00" android:textSize="12sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-"/>
+                <Button android:id="@+id/btn_time_sun_end" style="?android:attr/borderlessButtonStyle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="18:00" android:textSize="12sp"/>
+            </LinearLayout>
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout

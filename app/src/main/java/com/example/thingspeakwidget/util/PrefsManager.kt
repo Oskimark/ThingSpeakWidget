@@ -5,6 +5,13 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+data class DaySchedule(
+    val startHour: Int = 8,
+    val startMin: Int = 0,
+    val endHour: Int = 18,
+    val endMin: Int = 0
+)
+
 data class WidgetConfig(
     val channelId: String,
     val apiKey: String?,
@@ -12,7 +19,7 @@ data class WidgetConfig(
     val showSchedules: Boolean,
     val upperLimit: Float?,
     val lowerLimit: Float?,
-    val activeDays: Set<Int> = emptySet(), // Calendar.MONDAY = 2, etc.
+    val schedules: Map<Int, DaySchedule> = emptyMap(), // Key: Calendar.DAY_OF_WEEK (1-7)
     val selectedField: Int = 1,
     val updateIntervalSeconds: Int = 900, // Default 15 minutes
     val graphPointsCount: Int = 20
@@ -36,9 +43,9 @@ object PrefsManager {
         val json = getPrefs(context).getString(PREFIX + appWidgetId, null) ?: return null
         return try {
             val config: WidgetConfig = gson.fromJson(json, object : TypeToken<WidgetConfig>() {}.type)
-            // Ensure activeDays is not null (backward compatibility or manual JSON editing safety)
-            if (config.activeDays == null) {
-                config.copy(activeDays = emptySet())
+            // Ensure schedules is not null
+            if (config.schedules == null) {
+                config.copy(schedules = emptyMap())
             } else {
                 config
             }
