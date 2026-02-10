@@ -172,6 +172,17 @@ class ThingSpeakWidget : AppWidgetProvider() {
             )
             views.setOnClickPendingIntent(R.id.btn_settings, configPendingIntent)
 
+            val graphIntent = Intent(context, GraphActivity::class.java).apply {
+                putExtra("channelId", config.channelId)
+                putExtra("apiKey", config.apiKey)
+                putExtra("fieldId", config.selectedField)
+                putExtra("results", config.graphPointsCount)
+            }
+            val graphPendingIntent = PendingIntent.getActivity(
+                context, appWidgetId, graphIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            views.setOnClickPendingIntent(R.id.tv_value_primary, graphPendingIntent)
+
 
             try {
                 // Network call - Get last entry for the specific field to ensure we get a non-null value

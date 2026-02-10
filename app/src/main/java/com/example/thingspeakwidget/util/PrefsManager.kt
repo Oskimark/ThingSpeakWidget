@@ -14,7 +14,8 @@ data class WidgetConfig(
     val lowerLimit: Float?,
     val activeDays: Set<Int> = emptySet(), // Calendar.MONDAY = 2, etc.
     val selectedField: Int = 1,
-    val updateIntervalSeconds: Int = 900 // Default 15 minutes
+    val updateIntervalSeconds: Int = 900, // Default 15 minutes
+    val graphPointsCount: Int = 20
 )
 
 object PrefsManager {

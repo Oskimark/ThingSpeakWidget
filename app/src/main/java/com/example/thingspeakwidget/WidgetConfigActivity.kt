@@ -30,6 +30,7 @@ class WidgetConfigActivity : AppCompatActivity() {
     private lateinit var etUpperLimit: TextInputEditText
     private lateinit var etLowerLimit: TextInputEditText
     private lateinit var etUpdateInterval: TextInputEditText
+    private lateinit var etGraphPoints: TextInputEditText
     
     private val dayCheckboxes = mutableMapOf<Int, CheckBox>()
 
@@ -74,6 +75,7 @@ class WidgetConfigActivity : AppCompatActivity() {
             existingConfig.upperLimit?.let { etUpperLimit.setText(it.toString()) }
             existingConfig.lowerLimit?.let { etLowerLimit.setText(it.toString()) }
             etUpdateInterval.setText(existingConfig.updateIntervalSeconds.toString())
+            etGraphPoints.setText(existingConfig.graphPointsCount.toString())
             
             existingConfig.activeDays.forEach { day ->
                 dayCheckboxes[day]?.isChecked = true
@@ -129,6 +131,7 @@ class WidgetConfigActivity : AppCompatActivity() {
         etUpperLimit = findViewById(R.id.et_upper_limit)
         etLowerLimit = findViewById(R.id.et_lower_limit)
         etUpdateInterval = findViewById(R.id.et_update_interval)
+        etGraphPoints = findViewById(R.id.et_graph_points)
         
         dayCheckboxes[Calendar.MONDAY] = findViewById(R.id.cb_mon)
         dayCheckboxes[Calendar.TUESDAY] = findViewById(R.id.cb_tue)
@@ -159,6 +162,7 @@ class WidgetConfigActivity : AppCompatActivity() {
         val lowerLimit = etLowerLimit.text.toString().toFloatOrNull()
         // Use etUpdateInterval that is declared above
         val updateInterval = etUpdateInterval.text.toString().toIntOrNull() ?: 900
+        val graphPoints = etGraphPoints.text.toString().toIntOrNull() ?: 20
         
         val activeDays = mutableSetOf<Int>()
         dayCheckboxes.forEach { (day, cb) ->
@@ -177,8 +181,10 @@ class WidgetConfigActivity : AppCompatActivity() {
             lowerLimit = lowerLimit,
             activeDays = activeDays,
             selectedField = selectedField,
-            updateIntervalSeconds = updateInterval
+            updateIntervalSeconds = updateInterval,
+            graphPointsCount = graphPoints
         )
+
 
         PrefsManager.saveConfig(this, appWidgetId, config)
 

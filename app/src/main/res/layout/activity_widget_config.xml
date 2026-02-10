@@ -154,6 +154,20 @@
                 android:text="900" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Graph Points Count"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_graph_points"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="20" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/btn_test_alarm"
             android:layout_width="match_parent"
