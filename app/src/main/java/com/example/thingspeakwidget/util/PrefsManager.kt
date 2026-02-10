@@ -48,6 +48,20 @@ object PrefsManager {
     }
 
     fun deleteConfig(context: Context, appWidgetId: Int) {
-        getPrefs(context).edit().remove(PREFIX + appWidgetId).apply()
+        getPrefs(context).edit()
+            .remove(PREFIX + appWidgetId)
+            .remove("last_val_$appWidgetId")
+            .apply()
+    }
+
+    fun saveLastValue(context: Context, appWidgetId: Int, value: Float) {
+        getPrefs(context).edit().putFloat("last_val_$appWidgetId", value).apply()
+    }
+
+    fun loadLastValue(context: Context, appWidgetId: Int): Float? {
+        val prefs = getPrefs(context)
+        return if (prefs.contains("last_val_$appWidgetId")) {
+            prefs.getFloat("last_val_$appWidgetId", 0f)
+        } else null
     }
 }

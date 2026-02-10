@@ -225,8 +225,35 @@ class ThingSpeakWidget : AppWidgetProvider() {
             if (valueToDisplay != null) {
                 views.setTextViewText(R.id.tv_value_primary, valueToDisplay)
                 val1 = valueToDisplay
+
+                // Trend Indicator Logic
+                val currentVal = valueToDisplay.toFloatOrNull()
+                if (currentVal != null) {
+                    val lastVal = PrefsManager.loadLastValue(context, appWidgetId)
+                    if (lastVal != null) {
+                        views.setViewVisibility(R.id.tv_trend_arrow, View.VISIBLE)
+                        if (currentVal > lastVal) {
+                            views.setTextViewText(R.id.tv_trend_arrow, "↑")
+                            views.setTextColor(R.id.tv_trend_arrow, Color.BLACK)
+                        } else if (currentVal < lastVal) {
+                            views.setTextViewText(R.id.tv_trend_arrow, "↓")
+                            views.setTextColor(R.id.tv_trend_arrow, Color.BLACK)
+                        } else {
+                            // Equal
+                            views.setTextViewText(R.id.tv_trend_arrow, "→")
+                            views.setTextColor(R.id.tv_trend_arrow, Color.GRAY)
+                        }
+                    } else {
+                        views.setViewVisibility(R.id.tv_trend_arrow, View.GONE)
+                    }
+                    // Save for next time
+                    PrefsManager.saveLastValue(context, appWidgetId, currentVal)
+                } else {
+                    views.setViewVisibility(R.id.tv_trend_arrow, View.GONE)
+                }
             } else {
                 views.setTextViewText(R.id.tv_value_primary, "Null (F${config.selectedField})")
+                views.setViewVisibility(R.id.tv_trend_arrow, View.GONE)
             }
 
             // Format timestamp
